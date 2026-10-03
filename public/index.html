@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f1e9">
+  <meta name="description" content="A local food classification laboratory. Let Clef apply the Cube Rule to food names and photographs.">
+  <title>The Cube Rule — Food, defined.</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧊%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="masthead"><a class="brand" href="/" aria-label="Cube Rule home"><span class="brand-cube">◇</span> CUBE RULE<span class="edition">THE LOCAL EDITION</span></a><nav aria-label="Main navigation"><a href="#classify">The classifier ↗</a><a href="#rules">The nine rulings ↗</a></nav></header>
+  <main>
+    <section id="classify" class="laboratory" aria-labelledby="lab-title">
+      <div class="section-heading"><div><p class="eyebrow">01 / THE CLASSIFICATION LAB</p><h2 id="lab-title">What are you eating?</h2></div><p>One food. Nine possible truths.<br>Your Mac does the thinking.</p></div>
+      <div class="lab-grid">
+        <form id="classify-form" class="input-panel">
+          <div class="panel-top"><span class="eyebrow">SUBMIT THE EVIDENCE</span><span class="small-tag">TEXT + IMAGE</span></div>
+          <label for="food">Food name or description</label><textarea id="food" name="food" rows="3" maxlength="2000" placeholder="e.g. a hot dog in a connected bun"></textarea>
+          <div class="examples"><span>TRY</span><button type="button" data-example="Hot dog in a connected bun">Hot dog ↗</button><button type="button" data-example="A slice of pizza">Pizza ↗</button><button type="button" data-example="A closed-end burrito">Burrito ↗</button></div>
+          <div id="drop-zone" class="drop-zone"><input id="image" type="file" aria-label="Upload a food photograph" accept="image/png,image/jpeg,image/webp"><label for="image" class="upload-label"><span class="upload-icon">＋</span><strong>Or bring photographic evidence</strong><span>Drop, paste, or choose a photo · PNG, JPG, WEBP · 8 MB</span></label><div id="image-preview" hidden><img id="preview" alt="Your food photograph"><div><strong id="image-name"></strong><button id="remove-image" type="button">Remove photo ×</button></div></div></div>
+          <p class="input-hint">Be specific about the shape. A sealed burrito and an open wrap have different destinies.</p>
+          <button id="submit" class="primary" type="submit"><span>Let the cube decide</span><span>↗</span></button><button id="cancel" type="button" hidden>Cancel classification</button>
+          <p id="error" class="error" role="alert" hidden></p><div class="privacy"><span>◉</span> Runs on your Mac. Food photos stay on your Mac.</div>
+        </form>
+        <div id="result" class="result-panel" aria-live="polite" aria-busy="false"><div class="panel-top"><span class="eyebrow">THE VERDICT</span><span class="small-tag">AWAITING EVIDENCE</span></div><div class="empty-result"><div id="empty-cube"></div><h3>The truth is<br>in the structure.</h3><p>Submit a food name, a photo, or both.<br>We’ll find its place in the universe.</p></div><div class="result-foot">POWERED BY CLEF FLASH <span>100% LOCAL ↗</span></div></div>
+      </div>
+      <details id="setup"><summary>Local model setup & connection</summary><p>This app uses Ollama’s System One decision API. Start Ollama 0.35.1 or newer and install the model:</p><pre>ollama pull clef-flash
+ollama serve</pre><p>If the Ollama Mac app is running, you don’t need <code>ollama serve</code>. The first ruling may take a little longer while the model loads.</p><button id="retry" type="button" class="text-link">Check connection ↻</button><span id="version"></span></details>
+    </section>
+    <section id="rules" class="rule-section" aria-labelledby="rules-title"><div class="section-heading"><div><p class="eyebrow">02 / THE NINE RULINGS</p><h2 id="rules-title">Order in the food court.</h2></div><p>Count the surfaces, not the ingredients.<br>Tap a ruling to inspect the evidence.</p></div><div id="rule-grid" class="rule-grid"></div><div id="rule-detail" class="rule-detail" hidden></div><p class="rule-note">THE FINE PRINT <span>Rotation doesn’t change a ruling. Plates don’t count. Rice is open to interpretation.</span></p></section>
+    <section class="history-section" aria-labelledby="history-title"><div class="section-heading"><div><p class="eyebrow">03 / THE CASE FILES</p><h2 id="history-title">Previously on trial.</h2></div><button id="clear-history" class="text-link" hidden>Clear history ×</button></div><div id="history"></div></section>
+    <section class="closing"><p>Not every sandwich<br>is a <span>sandwich.</span></p><div>And that’s a beautiful thing.<br><a href="https://cuberule.com/" target="_blank" rel="noreferrer" class="text-link">Read the original manifesto ↗</a></div></section>
+  </main>
+  <footer><span>CUBE RULE / LOCAL EDITION</span><span>Inspired by <a href="https://cuberule.com/" target="_blank" rel="noreferrer">The Cube Rule</a> by @Phosphatide & @indirect.</span><span>BUILT ON STARCH. RUNS ON CLEF.</span></footer>
+</body>
+</html>

@@ -1,0 +1,25 @@
+export const rules = [
+  { id: 'salad', number: 0, name: 'Salad', emoji: '🥗', faces: [], description: 'No structural starch enclosing or supporting a filling.', examples: ['Steak', 'Soup', 'Mashed potatoes'], criteria: 'No structural starch. Steak, soup in a regular bowl, smooth mashed potatoes, chocolate, flan. Starch as an ingredient does not count as a structural surface.' },
+  { id: 'toast', number: 1, name: 'Toast', emoji: '🍕', faces: ['bottom'], description: 'One supporting surface of structural starch.', examples: ['Pizza', 'Nigiri', 'Open-faced sandwich'], criteria: 'One structural starch surface underneath toppings. Pizza, nigiri sushi, open-faced sandwich, pumpkin pie slice. A plain block of starch such as an unsliced muffin or bread also counts as toast.' },
+  { id: 'sandwich', number: 2, name: 'Sandwich', emoji: '🥪', faces: ['bottom', 'top'], description: 'Two opposing surfaces of structural starch.', examples: ['Burger', 'Unfolded quesadilla', 'Victoria sponge'], criteria: 'Filling between two opposing starch surfaces, top and bottom, with open sides. Ordinary sandwich, two-bun burger, non-folded quesadilla made with two tortillas, Victoria sponge cake. No middle bread layer.' },
+  { id: 'taco', number: 3, name: 'Taco', emoji: '🌭', faces: ['bottom', 'left', 'right'], description: 'Starch below and on two sides. A delicious U-turn.', examples: ['Hot dog', 'Taco', 'Uncut sub'], criteria: 'A U-shaped starch structure: bottom plus two sides, three surfaces. Taco, hot dog in a connected bun, uncut sub, folded quesadilla, double-crust pie slice on its side. Count topology regardless of rotation.' },
+  { id: 'sushi', number: 4, name: 'Sushi', emoji: '🌯', faces: ['bottom', 'left', 'right', 'top'], description: 'A starch tube. Four sides, two open ends.', examples: ['Open-ended wrap', 'Enchilada', 'Pigs in a blanket'], criteria: 'Starch wrapped around filling forming a tube with two open ends: four surrounding surfaces. Open-ended falafel wrap, enchilada, pigs in a blanket. Closed-end burritos instead are calzones. Nigiri is toast, not sushi under this rule.' },
+  { id: 'quiche', number: 5, name: 'Quiche', emoji: '🥧', faces: ['bottom', 'left', 'right', 'front', 'back'], description: 'Five starch surfaces. Everything but the lid.', examples: ['Bread bowl', 'Deep-dish pizza', 'Whole open-top pie'], criteria: 'A starch container with a bottom and all four sides, open only at the top. Whole open-top pie, quiche, cheesecake with side crust, deep-dish pizza, soup or salad in an edible bread bowl, falafel pita.' },
+  { id: 'calzone', number: 6, name: 'Calzone', emoji: '🥟', faces: ['bottom', 'left', 'right', 'front', 'back', 'top'], description: 'Starch on all six sides. The filling is sealed in.', examples: ['Burrito', 'Dumpling', 'Pop-Tart'], criteria: 'Filling fully enclosed by starch on all six sides. Closed-end burrito, calzone, corn dog, dumpling, whole covered pie, Pop-Tart, unbitten Uncrustable. A small bite or damage should be noted as ambiguity.' },
+  { id: 'cake', number: 7, name: 'Cake', emoji: '🍰', faces: ['layers'], description: 'Multiple stacked starch layers, with filling between.', examples: ['Lasagna', 'Big Mac', 'Pancake stack'], criteria: 'Multiple stacked starch layers (three or more) with filling or toppings between them. Lasagna, Big Mac with its middle bun, stacked pancakes. Two starch surfaces with one filling layer is sandwich, not cake.' },
+  { id: 'nachos', number: 8, name: 'Nachos', emoji: '🍟', faces: ['pieces'], description: 'Separate starch pieces scattered through the dish.', examples: ['Poutine', 'Cereal', 'Ramen'], criteria: 'Separate small starch pieces distributed through or under toppings, rather than continuous enclosing surfaces. Nachos, poutine, cereal with milk, salad with croutons, fried noodles, couscous, ramen (wet nachos).' }
+];
+
+export function cubeSvg(rule, className = '') {
+  const active = new Set(rule.faces);
+  const polygons = {
+    back: '80,24 146,62 146,142 80,104', left: '14,62 80,24 80,104 14,142',
+    bottom: '14,142 80,104 146,142 80,180', right: '80,100 146,62 146,142 80,180',
+    front: '14,62 80,100 80,180 14,142', top: '80,24 146,62 80,100 14,62'
+  };
+  const fill = face => active.has(face) ? 'var(--starch, #ed633b)' : 'transparent';
+  let surfaces = Object.entries(polygons).map(([face, points]) => `<polygon points="${points}" fill="${fill(face)}" fill-opacity=".82" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>`).join('');
+  if (active.has('layers')) surfaces += [64, 99, 134].map(offset => `<path d="M14 ${offset} l66 -38 66 38 -66 38 Z" fill="var(--starch, #ed633b)" stroke="currentColor" stroke-width="1.5"/>`).join('');
+  if (active.has('pieces')) surfaces += '<path d="M48 110 l22 -13 22 13 -22 13 Z M70 123 v26 l22 -13 v-26 M48 110 v26 l22 13" fill="var(--starch, #ed633b)" stroke="currentColor" stroke-width="1.5"/>';
+  return `<svg class="${className}" viewBox="0 0 160 204" role="img" aria-label="${rule.name}: ${rule.description}">${surfaces}</svg>`;
+}
