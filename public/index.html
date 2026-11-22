@@ -2,38 +2,156 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f4f1e9">
-  <meta name="description" content="A local food classification laboratory. Let Clef apply the Cube Rule to food names and photographs.">
-  <title>The Cube Rule — Food, defined.</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧊%3C/text%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f6f4ec">
+  <meta name="description" content="Classify a dish by its starch structure with Clef Flash and explore all nine categories in the Cube Rule field guide.">
+  <title>Food by Clef — The Cube Rule classifier</title>
+  <link rel="icon" href="/cube.svg">
   <link rel="stylesheet" href="/style.css">
   <script type="module" src="/app.js"></script>
 </head>
 <body>
-  <header class="masthead"><a class="brand" href="/" aria-label="Cube Rule home"><span class="brand-cube">◇</span> CUBE RULE<span class="edition">THE LOCAL EDITION</span></a><nav aria-label="Main navigation"><a href="#classify">The classifier ↗</a><a href="#rules">The nine rulings ↗</a></nav></header>
+  <a class="skip" href="#food">Skip to classifier</a>
+  <header class="mast">
+    <div class="shell mast-inner">
+      <a class="brand" href="/"><img src="/cube.svg" alt="">Food by <i>Clef.</i></a>
+      <nav aria-label="Site navigation">
+        <a href="/orchestration">Orchestration Notes →</a>
+      </nav>
+    </div>
+  </header>
   <main>
-    <section id="classify" class="laboratory" aria-labelledby="lab-title">
-      <div class="section-heading"><div><p class="eyebrow">01 / THE CLASSIFICATION LAB</p><h2 id="lab-title">What are you eating?</h2></div><p>One food. Nine possible truths.<br>Your Mac does the thinking.</p></div>
-      <div class="lab-grid">
-        <form id="classify-form" class="input-panel">
-          <div class="panel-top"><span class="eyebrow">SUBMIT THE EVIDENCE</span><span class="small-tag">TEXT + IMAGE</span></div>
-          <label for="food">Food name or description</label><textarea id="food" name="food" rows="3" maxlength="2000" placeholder="e.g. a hot dog in a connected bun"></textarea>
-          <div class="examples"><span>TRY</span><button type="button" data-example="Hot dog in a connected bun">Hot dog ↗</button><button type="button" data-example="A slice of pizza">Pizza ↗</button><button type="button" data-example="A closed-end burrito">Burrito ↗</button></div>
-          <div id="drop-zone" class="drop-zone"><input id="image" type="file" aria-label="Upload a food photograph" accept="image/png,image/jpeg,image/webp"><label for="image" class="upload-label"><span class="upload-icon">＋</span><strong>Or bring photographic evidence</strong><span>Drop, paste, or choose a photo · PNG, JPG, WEBP · 8 MB</span></label><div id="image-preview" hidden><img id="preview" alt="Your food photograph"><div><strong id="image-name"></strong><button id="remove-image" type="button">Remove photo ×</button></div></div></div>
-          <p class="input-hint">Be specific about the shape. A sealed burrito and an open wrap have different destinies.</p>
-          <button id="submit" class="primary" type="submit"><span>Let the cube decide</span><span>↗</span></button><button id="cancel" type="button" hidden>Cancel classification</button>
-          <p id="error" class="error" role="alert" hidden></p><div class="privacy"><span>◉</span> Runs on your Mac. Food photos stay on your Mac.</div>
+    <section class="lab shell" id="classify" aria-labelledby="lab-title">
+      <div class="lab-work">
+        <h1 id="lab-title">What are <br>you <em>eating?</em></h1>
+        <p class="intro">Enter a dish or photo—Clef classifies it by starch shape.</p>
+        <form id="classify-form">
+          <div class="field-head"><label for="food" class="sr-only">Describe your dish</label><span class="meta" id="char-count" hidden></span></div>
+          <div id="drop-zone">
+            <textarea id="food" name="food" rows="2" maxlength="2000" placeholder="e.g. A hot dog in a connected bun"></textarea>
+            <div class="input-tools">
+              <input id="image" type="file" accept="image/jpeg,image/png,image/webp" aria-label="Upload a food photo">
+              <label class="upload-label" for="image">
+                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 6 1.5-2h4L16 6h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/><circle cx="12" cy="12.5" r="3.4"/></svg>
+                <span><strong>Drop, paste, or upload a food photo</strong><span class="format">PNG, JPG, WEBP · up to 8 MB</span></span>
+              </label>
+            </div>
+            <div id="image-preview" hidden>
+              <img id="preview" alt="Your attached photo">
+              <div>
+                <strong id="image-name"></strong>
+                <button id="remove-image" type="button">Remove photo ×</button>
+              </div>
+            </div>
+          </div>
+          <div class="examples">
+            <span>Try</span>
+            <button type="button" data-example="A hot dog in a connected bun">Hot dog</button>
+            <button type="button" data-example="A slice of pizza">Pizza</button>
+            <button type="button" data-example="Lasagna">Lasagna</button>
+            <button id="surprise" type="button" title="Fill in a random dish">Shuffle <span aria-hidden="true">⤨</span></button>
+          </div>
+          <button id="submit" type="submit" class="primary">Classify dish <svg viewBox="0 0 20 22" aria-hidden="true"><path d="m10 1 9 5v10l-9 5-9-5V6zM1 6l9 5 9-5M10 11v10"/></svg></button>
+          <button type="button" id="cancel" hidden>Cancel classification</button>
+          <p id="error" role="alert" hidden></p>
+          <p class="privacy">Runs locally on your Mac. Photos stay on your Mac.</p>
         </form>
-        <div id="result" class="result-panel" aria-live="polite" aria-busy="false"><div class="panel-top"><span class="eyebrow">THE VERDICT</span><span class="small-tag">AWAITING EVIDENCE</span></div><div class="empty-result"><div id="empty-cube"></div><h3>The truth is<br>in the structure.</h3><p>Submit a food name, a photo, or both.<br>We’ll find its place in the universe.</p></div><div class="result-foot">POWERED BY CLEF FLASH <span>100% LOCAL ↗</span></div></div>
       </div>
-      <details id="setup"><summary>Local model setup & connection</summary><p>This app uses Ollama’s System One decision API. Start Ollama 0.35.1 or newer and install the model:</p><pre>ollama pull clef-flash
-ollama serve</pre><p>If the Ollama Mac app is running, you don’t need <code>ollama serve</code>. The first ruling may take a little longer while the model loads.</p><button id="retry" type="button" class="text-link">Check connection ↻</button><span id="version"></span></details>
+      <div class="board" id="result" aria-live="polite" aria-busy="false">
+        <div class="spec-head">
+          <span>SPECIMEN VIEW</span>
+          <div class="gallery-nav" role="group" aria-label="Browse worked examples">
+            <button type="button" data-step="-1" aria-label="Previous specimen">‹</button>
+            <span id="spec-position">1 / 9</span>
+            <button type="button" data-step="1" aria-label="Next specimen">›</button>
+          </div>
+        </div>
+        <div class="plate">
+          <img id="spec-image" class="burger" src="/burger.webp" alt="Exploded burger with separate top and bottom buns surrounding the filling">
+        </div>
+        <div class="spec-caption">
+          <div>
+            <span class="mini">WORKED EXAMPLE</span>
+            <h2 id="spec-title">The burger.</h2>
+          </div>
+          <span id="spec-category" class="class-tag">Sandwich</span>
+        </div>
+        <p id="spec-note" class="spec-note">Two opposing buns hold the filling between them.</p>
+        <button type="button" data-try-specimen class="try-specimen">Try this dish</button>
+      </div>
     </section>
-    <section id="rules" class="rule-section" aria-labelledby="rules-title"><div class="section-heading"><div><p class="eyebrow">02 / THE NINE RULINGS</p><h2 id="rules-title">Order in the food court.</h2></div><p>Count the surfaces, not the ingredients.<br>Tap a ruling to inspect the evidence.</p></div><div id="rule-grid" class="rule-grid"></div><div id="rule-detail" class="rule-detail" hidden></div><p class="rule-note">THE FINE PRINT <span>Rotation doesn’t change a ruling. Plates don’t count. Rice is open to interpretation.</span></p></section>
-    <section class="history-section" aria-labelledby="history-title"><div class="section-heading"><div><p class="eyebrow">03 / THE CASE FILES</p><h2 id="history-title">Previously on trial.</h2></div><button id="clear-history" class="text-link" hidden>Clear history ×</button></div><div id="history"></div></section>
-    <section class="closing"><p>Not every sandwich<br>is a <span>sandwich.</span></p><div>And that’s a beautiful thing.<br><a href="https://cuberule.com/" target="_blank" rel="noreferrer" class="text-link">Read the original manifesto ↗</a></div></section>
+
+    <section class="guide band" id="rules" aria-labelledby="rules-title">
+      <div class="shell">
+        <div class="kicker"><span class="line"></span> THE FIELD GUIDE</div>
+        <div class="section-heading">
+          <h2 id="rules-title">The nine <em>rulings.</em></h2>
+          <p>Follow the starch. Select a dish to inspect its shape.</p>
+        </div>
+        <div id="rule-grid" class="rule-grid"></div>
+        <div id="rule-detail" class="rule-detail" hidden></div>
+        <p class="manifesto-note">The framework comes from <a href="https://cuberule.com/" target="_blank" rel="noreferrer">The Cube Rule manifesto ↗</a>: classify food by the placement of structural starch. Theory by @Phosphatide; manifesto site by @indirect.</p>
+      </div>
+    </section>
+
+    <section class="cases shell" id="cases" aria-labelledby="case-title">
+      <div class="kicker"><span class="line"></span> CASE FILES</div>
+      <div class="section-heading">
+        <h2 id="case-title">Your <em>rulings.</em></h2>
+        <button id="clear-history" type="button" hidden>Clear history</button>
+      </div>
+      <div id="history-controls" hidden>
+        <p id="history-stats"></p>
+        <div id="history-filters" aria-label="Filter case files"></div>
+      </div>
+      <div id="history"></div>
+    </section>
+
+    <section class="about band">
+      <div class="shell">
+        <details id="setup">
+          <summary>How Clef makes a ruling <span aria-hidden="true">+</span></summary>
+          <div class="method">
+            <div>
+              <h3>Read the evidence</h3>
+              <p>A name, a description, or a photo gives Clef evidence about the dish. An open wrap and a sealed burrito have different structures.</p>
+            </div>
+            <div>
+              <h3>Score nine shapes</h3>
+              <p>Clef Flash scores the nine Cube Rule categories and checks whether food is present and the evidence is ambiguous.</p>
+            </div>
+            <div>
+              <h3>Inspect the ruling</h3>
+              <p>Compare category scores and review the winning definition. Scores express model preferences. Case history stays in this browser.</p>
+            </div>
+          </div>
+          <div class="service">
+            <button id="retry" type="button">Check service</button>
+            <span id="version"></span>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section id="developer" class="developer shell" aria-labelledby="developer-title">
+      <div class="developer-id">
+        <div class="kicker"><span class="line"></span> THE DEVELOPER</div>
+        <h2 id="developer-title">Josh <em>Johnson.</em></h2>
+        <p class="role">Independent developer at AURABLOX</p>
+      </div>
+      <div class="developer-bio">
+        <p>Josh builds data platforms and AI applications. He built Food by Clef to make a classifier’s decisions visible. Try an open wrap, then a sealed burrito, and you can see how a single detail changes the model’s scores.</p>
+        <div class="profile-links">
+          <a href="https://resume-jj.web.app/" target="_blank" rel="noreferrer">View portfolio</a>
+          <a href="https://github.com/murderszn" target="_blank" rel="noreferrer">GitHub <span>@murderszn</span></a>
+        </div>
+      </div>
+    </section>
   </main>
-  <footer><span>CUBE RULE / LOCAL EDITION</span><span>Inspired by <a href="https://cuberule.com/" target="_blank" rel="noreferrer">The Cube Rule</a> by @Phosphatide & @indirect.</span><span>BUILT ON STARCH. RUNS ON CLEF.</span></footer>
+  <footer class="shell">
+    <a class="brand small" href="#classify"><img src="/cube.svg" alt="">Food by <i>Clef.</i></a>
+    <span>Inspired by <a href="https://cuberule.com/" target="_blank" rel="noreferrer">The Cube Rule</a> by @Phosphatide &amp; @indirect.</span>
+    <a href="#developer">About the developer</a>
+  </footer>
 </body>
 </html>

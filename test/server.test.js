@@ -2,14 +2,20 @@ import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { Readable, Writable } from 'node:stream';
 import { rules } from '../public/rules.js';
+import { parseDecision } from '../classification.js';
 
 let app;
 let received;
 let mockError = false;
+let mockOffline = false;
+let mockTags = [{ name: 'clef-flash:latest' }];
 let invalidDecision = false;
+let omitResponseModel = false;
 let decisionRequest;
 let validateInput;
 const originalFetch = globalThis.fetch;
+
+const validProbabilities = () => Object.fromEntries(rules.map(rule => [rule.id, rule.id === 'taco' ? .9 : rule.id === 'sandwich' ? .1 : 0]));
 
 async function localRequest(path, { method = 'GET', headers = {}, body = '' } = {}) {
   const request = Readable.from(body ? [Buffer.from(body)] : []);
@@ -28,12 +34,20 @@ async function localRequest(path, { method = 'GET', headers = {}, body = '' } = 
 
 before(async () => {
   globalThis.fetch = async (url, options) => {
-    if (url.endsWith('/api/tags')) return Response.json({ models: [{ name: 'clef-flash:latest' }] });
+    if (mockOffline) throw new Error('fetch failed');
+    if (url.endsWith('/api/tags')) return Response.json({ models: mockTags });
     if (url.endsWith('/api/version')) return Response.json({ version: '0.35.1' });
     assert.ok(url.endsWith('/v1/systemone'));
     received = JSON.parse(options.body);
     if (mockError) return Response.json({ error: 'model not found' }, { status: 404 });
-    return Response.json({ model: 'clef-flash', answers: { category: { choice: invalidDecision ? 'unknown' : 'taco', probabilities: { taco: .9, sandwich: .1 }, confidence: .8 }, food_present: { noul: .99 }, ambiguous: { noul: .1 } } });
+    return Response.json({
+      ...(omitResponseModel ? {} : { model: received.model }),
+      answers: {
+        category: { choice: invalidDecision ? 'unknown' : 'taco', probabilities: validProbabilities(), confidence: .8 },
+        food_present: { noul: .99 },
+        ambiguous: { noul: .1 }
+      }
+    });
   };
   const module = await import('../server.js');
   ({ decisionRequest, validateInput } = module);
@@ -62,12 +76,39 @@ test('validation handles names, images, empty, malformed and oversized input', (
 
 test('serves local interface and reports model availability', async () => {
   const response = await localRequest('/');
-  assert.match(await response.text(), /What are you eating/);
+  assert.match(await response.text(), /What are <br>you <em>eating\?<\/em>/);
   assert.match(response.headers.get('content-security-policy'), /frame-ancestors 'none'/);
   const status = await localRequest('/api/status').then(response => response.json());
   assert.equal(status.online, true);
   assert.equal(status.installed, true);
+  assert.deepEqual(status.availableModels, ['clef-flash']);
   assert.equal((await localRequest('/unknown')).status, 404);
+});
+
+test('status extracts deduplicated Clef models and returns empty list when offline', async () => {
+  try {
+    mockTags = [
+      { name: 'clef-flash:latest' },
+      { name: 'clef-flash' },
+      { name: 'clef:latest' },
+      { name: 'clef-pro:q4_0' },
+      { name: 'llama3.2:latest' },
+      { name: 'my-clef:latest' }
+    ];
+    const onlineStatus = await localRequest('/api/status').then(response => response.json());
+    assert.equal(onlineStatus.online, true);
+    assert.equal(onlineStatus.installed, true);
+    assert.deepEqual(onlineStatus.availableModels, ['clef-flash', 'clef', 'clef-pro:q4_0']);
+
+    mockOffline = true;
+    const offlineStatus = await localRequest('/api/status').then(response => response.json());
+    assert.equal(offlineStatus.online, false);
+    assert.equal(offlineStatus.installed, false);
+    assert.deepEqual(offlineStatus.availableModels, []);
+  } finally {
+    mockOffline = false;
+    mockTags = [{ name: 'clef-flash:latest' }];
+  }
 });
 
 test('forwards evidence to System One and preserves actual model scores', async () => {
@@ -79,6 +120,24 @@ test('forwards evidence to System One and preserves actual model scores', async 
   assert.equal(result.probabilities.taco, .9);
   assert.equal(result.foodProbability, .99);
   assert.ok(result.elapsedMs >= 0);
+});
+
+test('supports optional model override in classify and rejects invalid model names', async () => {
+  try {
+    omitResponseModel = true;
+    const response = await localRequest('/api/classify', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ text: 'hot dog', model: 'clef' }) });
+    const result = await response.json();
+    assert.equal(response.status, 200);
+    assert.equal(received.model, 'clef');
+    assert.equal(result.model, 'clef');
+
+    for (const invalidModel of ['', 123, 'bad model', 'x'.repeat(65)]) {
+      const invalid = await localRequest('/api/classify', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ text: 'hot dog', model: invalidModel }) });
+      assert.equal(invalid.status, 400);
+    }
+  } finally {
+    omitResponseModel = false;
+  }
 });
 
 test('rejects invalid input and cross-origin inference requests', async () => {
@@ -100,4 +159,22 @@ test('reports upstream errors and invalid model decisions', async () => {
   assert.equal(malformed.status, 502);
   assert.match((await malformed.json()).error, /unexpected decision/);
   invalidDecision = false;
+});
+
+test('parseDecision rejects missing food_present.noul, ambiguous.noul, or incomplete rule probabilities', () => {
+  const base = {
+    answers: {
+      category: { choice: 'taco', probabilities: validProbabilities(), confidence: .8 },
+      food_present: { noul: .99 },
+      ambiguous: { noul: .1 }
+    }
+  };
+  assert.equal(parseDecision(base, 12.4).model, 'clef-flash');
+  assert.equal(parseDecision(base, 12.4, 'clef').model, 'clef');
+
+  assert.throws(() => parseDecision({ answers: { ...base.answers, food_present: {} } }, 10), /unexpected decision/);
+  assert.throws(() => parseDecision({ answers: { ...base.answers, food_present: undefined } }, 10), /unexpected decision/);
+  assert.throws(() => parseDecision({ answers: { ...base.answers, ambiguous: {} } }, 10), /unexpected decision/);
+  assert.throws(() => parseDecision({ answers: { ...base.answers, ambiguous: undefined } }, 10), /unexpected decision/);
+  assert.throws(() => parseDecision({ answers: { ...base.answers, category: { choice: 'taco', probabilities: { taco: .9, sandwich: .1 }, confidence: .8 } } }, 10), /unexpected decision/);
 });

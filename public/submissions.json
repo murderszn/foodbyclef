@@ -1,0 +1,50 @@
+[
+  {
+    "id": "finance-risk",
+    "discipline": "Finance & Risk",
+    "orchestrator": "Paperclip",
+    "plinko": "Classify invoices and expenses into GL codes, check policy compliance (noul), and score anomaly risk—auto-posting clean entries directly to the ERP.",
+    "handoff": "Escalate only flagged anomalies or cross-entity exceptions to a reasoning agent to assemble audit memos and controller briefs.",
+    "contributor": "@murderszn"
+  },
+  {
+    "id": "marketing-growth",
+    "discipline": "Marketing & Growth",
+    "orchestrator": "Paperclip",
+    "plinko": "Sort inbound creative, social signals, and customer feedback by campaign theme, brand-safety (noul), and sentiment tier—auto-tagging and routing routine work.",
+    "handoff": "Route nuanced PR risk or competitive threads to a reasoning agent to draft executive responses and positioning adjustments.",
+    "contributor": "@murderszn"
+  },
+  {
+    "id": "sales-revops",
+    "discipline": "Sales & RevOps",
+    "orchestrator": "LangGraph",
+    "plinko": "Score inbound leads by ICP segment, buying stage, and competitor-mention (noul)—triggering instant CRM territory routing and tailored sequences.",
+    "handoff": "Invoke a reasoning agent only for bespoke enterprise RFPs, custom deal-desk structuring, or security questionnaire synthesis.",
+    "contributor": "@murderszn"
+  },
+  {
+    "id": "engineering-coding",
+    "discipline": "Engineering & Coding",
+    "orchestrator": "Paperclip · LangGraph",
+    "plinko": "Triage issues, PRs, and CI failures into subsystem owners, bug vs. feature, and security-sensitive (noul)—applying labels and paging owners in milliseconds.",
+    "handoff": "Dispatch a coding reasoning agent only when root-cause analysis or multi-file patch generation is required.",
+    "contributor": "@murderszn"
+  },
+  {
+    "id": "editorial-writing",
+    "discipline": "Editorial & Writing",
+    "orchestrator": "Paperclip",
+    "plinko": "Grade incoming drafts by desk/genre, factual-claim density (noul), and house-style alignment—fast-tracking clean briefs straight to production.",
+    "handoff": "Escalate investigative pieces or tone-contested drafts to a reasoning agent for structural line editing, citation checks, and counter-argument review.",
+    "contributor": "@murderszn"
+  },
+  {
+    "id": "customer-support",
+    "discipline": "Customer Support & Ops",
+    "orchestrator": "LangGraph",
+    "plinko": "Route tickets by issue category, refund eligibility (noul), and churn risk—resolving routine order status, replacements, and billing inquiries instantly.",
+    "handoff": "Hand off multi-order disputes, VIP retention cases, or ambiguous policy exceptions to a reasoning agent armed with pre-scored account context.",
+    "contributor": "@murderszn"
+  }
+]

@@ -6,7 +6,15 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "test": "node --test"
+    "test": "node --test",
+    "dev:cloudflare": "wrangler dev",
+    "deploy:cloudflare": "wrangler deploy && npm run deploy:site",
+    "deploy:site": "cd cloudflare/pages && wrangler pages deploy --branch=main"
   },
-  "engines": { "node": ">=22" }
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "wrangler": "^4.147.0"
+  }
 }

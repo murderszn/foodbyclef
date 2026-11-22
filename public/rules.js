@@ -18,8 +18,30 @@ export function cubeSvg(rule, className = '') {
     front: '14,62 80,100 80,180 14,142', top: '80,24 146,62 80,100 14,62'
   };
   const fill = face => active.has(face) ? 'var(--starch, #ed633b)' : 'transparent';
-  let surfaces = Object.entries(polygons).map(([face, points]) => `<polygon points="${points}" fill="${fill(face)}" fill-opacity=".82" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>`).join('');
-  if (active.has('layers')) surfaces += [64, 99, 134].map(offset => `<path d="M14 ${offset} l66 -38 66 38 -66 38 Z" fill="var(--starch, #ed633b)" stroke="currentColor" stroke-width="1.5"/>`).join('');
-  if (active.has('pieces')) surfaces += '<path d="M48 110 l22 -13 22 13 -22 13 Z M70 123 v26 l22 -13 v-26 M48 110 v26 l22 13" fill="var(--starch, #ed633b)" stroke="currentColor" stroke-width="1.5"/>';
+  let surfaces = Object.entries(polygons)
+    .map(([face, points]) => `<polygon points="${points}" fill="${fill(face)}" fill-opacity=".82" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>`)
+    .join('');
+  if (active.has('layers')) {
+    surfaces += [142, 102, 62]
+      .map(offset => `<path d="M14 ${offset} l66 -38 66 38 -66 38 Z" fill="var(--starch, #ed633b)" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>`)
+      .join('');
+  }
+  if (active.has('pieces')) {
+    const miniCube = (x, y, dx, dy, h) => [
+      `${x},${y - 2 * dy} ${x + dx},${y - dy} ${x},${y} ${x - dx},${y - dy}`,
+      `${x - dx},${y - dy} ${x},${y} ${x},${y + h} ${x - dx},${y - dy + h}`,
+      `${x},${y} ${x + dx},${y - dy} ${x + dx},${y - dy + h} ${x},${y + h}`
+    ]
+      .map(points => `<polygon points="${points}" fill="var(--starch, #ed633b)" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>`)
+      .join('');
+    surfaces += [
+      [64, 70, 11, 6, 10],
+      [114, 98, 14, 8, 9],
+      [44, 123, 13, 7, 13],
+      [96, 144, 15, 9, 12]
+    ]
+      .map(([x, y, dx, dy, h]) => miniCube(x, y, dx, dy, h))
+      .join('');
+  }
   return `<svg class="${className}" viewBox="0 0 160 204" role="img" aria-label="${rule.name}: ${rule.description}">${surfaces}</svg>`;
 }

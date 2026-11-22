@@ -1,6 +1,23 @@
 # Cube Rule — Local Edition
 
-A manifesto-inspired local web app that classifies food names, descriptions, and photos using Clef Flash through Ollama. All nine Cube Rule categories, probability breakdowns, ambiguity detection, copy/export, and browser-local case history. No cloud services, API keys, build step, or npm dependencies.
+A manifesto-inspired local web app that classifies food names, descriptions, and photos using Clef Flash through Ollama. All nine Cube Rule categories, probability breakdowns, ambiguity detection, copy/export, and browser-local case history. Local use requires no cloud services, API keys, build step, or runtime npm dependencies.
+
+## Hosted edition
+
+The public demo is **https://foodbyclef.pages.dev**. It runs on Cloudflare Workers with Cloudflare's hosted Clef Flash model. A small Pages service binding forwards requests to the `foodbyclef` Worker, providing a short public URL without an account-name suffix. The Worker is also reachable at https://foodbyclef.jjohnso75.workers.dev. Both addresses share the same daily allowance.
+
+The local edition continues to use Ollama with `npm start`; it does not call Cloudflare.
+
+```sh
+npm install
+npm run deploy:cloudflare
+```
+
+Wrangler must be logged in to the Cloudflare account in `wrangler.jsonc`. The Worker serves the assets, adapts the page to clearly disclose Cloudflare processing, and calls `@cf/cloudflare/clef-flash` through its AI binding. No API credentials are exposed in the browser. Text and resized photographs are sent to Cloudflare; the application does not persist uploads or log inputs. History still stays in localStorage. Cloudflare's own service policies apply.
+
+The hosted demo limits inference to five requests per minute per IP (Cloudflare location-local rate limiter) and 1,000 inference attempts per UTC day globally. A Durable Object atomically reserves daily slots before inference, so concurrent requests cannot exceed the daily allowance. Failed inference attempts also count. Change `DAILY_REQUEST_LIMIT` in `wrangler.jsonc` and redeploy to adjust the limit; set it to `0` to disable inference. This is a request cap, not an exact dollar budget. Inputs are limited to 2,000 text characters and 4 MiB per resized image. AI and Durable Object usage follows your Cloudflare plan.
+
+`npm run dev:cloudflare` previews the hosted edition. Cloudflare AI bindings can use remote inference during development; use `npm start` for local-only inference.
 
 ## Run
 
@@ -45,10 +62,14 @@ Tests cover category definitions, decision request construction, input validatio
 ## Files
 
 - `server.js`: dependency-free local HTTP server and Ollama gateway.
+- `classification.js`: shared input validation and decision schema.
+- `cloudflare/worker.js`, `wrangler.jsonc`: hosted API, page adaptation, and usage limits.
+- `cloudflare/pages/`: public URL gateway, connected through a Cloudflare service binding.
 - `public/index.html`, `public/style.css`: responsive interface.
 - `public/app.js`: uploads, inference, results, and local history.
 - `public/rules.js`: shared category criteria and original cube illustrations.
 - `test/server.test.js`: API and validation tests.
+- `test/cloudflare.test.js`: hosted API and daily allowance tests.
 
 ## Sources
 

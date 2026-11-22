@@ -1,0 +1,12 @@
+// One worked example for each rule. These captions describe the illustrations.
+export const specimens = [
+  { rule: 'sandwich', image: 'burger', title: 'The burger', dish: 'A burger with a patty between two separate bun halves', alt: 'Exploded burger with a top and bottom bun on opposite sides of the filling', note: 'Two opposing buns hold the filling between them.' },
+  { rule: 'toast', image: 'pizza', title: 'The pizza slice', dish: 'A slice of pizza with toppings on a single crust', alt: 'Triangular slice of pizza with toppings supported by a single crust', note: 'One continuous crust supports all the toppings from below.' },
+  { rule: 'taco', image: 'hot-dog', title: 'The hot dog', dish: 'A hot dog in a connected bun', alt: 'Sausage nestled inside the fold of a connected hot dog bun', note: 'The hinge joins the two sides of the bun into a U.' },
+  { rule: 'sushi', image: 'wrap', title: 'The open wrap', dish: 'A falafel wrap in a tortilla with both ends open', alt: 'An open tortilla wrap with falafel and vegetables visible inside', note: 'The tortilla forms a tube around the filling and leaves both ends open.' },
+  { rule: 'quiche', image: 'bread-bowl', title: 'The bread bowl', dish: 'Chowder in an edible bread bowl with the lid removed', alt: 'Round bread bowl filled with chowder and open at the top', note: 'A bread floor and surrounding walls hold the chowder. The top stays open.' },
+  { rule: 'calzone', image: 'calzone', title: 'The calzone', dish: 'A completely sealed half-moon calzone', alt: 'Intact half-moon calzone with a crimped, sealed edge', note: 'Dough covers every side. The crimped edge seals the filling inside.' },
+  { rule: 'cake', image: 'lasagna', title: 'The lasagna', dish: 'A serving of lasagna with several stacked pasta sheets and filling between them', alt: 'Cut side of a lasagna showing pasta sheets stacked between layers of filling', note: 'Several pasta sheets alternate with filling to form a stack.' },
+  { rule: 'nachos', image: 'cereal', title: 'The cereal bowl', dish: 'Separate cereal rings floating in a bowl of milk', alt: 'Individual cereal rings scattered across the surface of milk', note: 'Each cereal ring is a separate piece of starch. The ceramic bowl does not count.' },
+  { rule: 'salad', image: 'steak', title: 'The steak', dish: 'A grilled steak served on its own without bread or sides', alt: 'Grilled steak without any bread, crust, or other supporting starch', note: 'The steak holds its own shape with zero supporting starch surfaces.' }
+];

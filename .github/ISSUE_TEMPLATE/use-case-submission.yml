@@ -1,0 +1,59 @@
+name: Submit an Orchestration Use Case
+description: Propose a new neural decision engine (Plinko cascade + reasoning handoff) example for the Food by Clef library.
+title: "[Use Case] "
+labels: ["use-case-submission"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for contributing to the **Food by Clef** orchestration library!
+        Once reviewed and approved, your workflow will be added to `public/submissions.json` and published on `/orchestration`.
+
+  - type: input
+    id: discipline
+    attributes:
+      label: Discipline / Industry
+      description: Broad category for the library card (e.g., Finance & Risk, Healthcare, Legal, DevOps).
+      placeholder: e.g. Legal & Compliance
+    validations:
+      required: true
+
+  - type: dropdown
+    id: orchestrator
+    attributes:
+      label: Primary Orchestrator Pattern
+      options:
+        - Paperclip
+        - LangGraph
+        - Standalone Plinko (No LLM)
+        - Custom State Machine
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: plinko
+    attributes:
+      label: Plinko Cascade (Fast Decision Engine)
+      description: Describe the repeatable `choice` grouping and `noul` binary gates handled by Clef, Jev, or Gemini Decision.
+      placeholder: e.g. Classify incoming NDAs by jurisdiction, flag non-standard indemnity clauses (noul), and auto-approve standard templates.
+    validations:
+      required: true
+
+  - type: textarea
+    id: handoff
+    attributes:
+      label: Reasoning Agent Handoff
+      description: When does the orchestrator escalate to a heavier generative reasoning agent (or human)?
+      placeholder: e.g. Escalate only redlined or high-ambiguity clauses to a reasoning agent to draft counsel markup.
+    validations:
+      required: true
+
+  - type: input
+    id: contributor
+    attributes:
+      label: Contributor Handle (Optional)
+      description: Your GitHub handle or name if you would like credit on the library card.
+      placeholder: e.g. @yourhandle
+    validations:
+      required: false
