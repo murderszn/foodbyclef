@@ -3,11 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#111210">
+  <meta name="theme-color" content="#050505">
   <meta name="description" content="Classify a dish by its starch structure with Clef Flash and explore all nine categories in the Cube Rule field guide.">
   <title>Food by Clef — The Cube Rule classifier</title>
   <link rel="icon" href="/cube.svg">
   <link rel="stylesheet" href="/style.css">
+  <script src="/theme.js"></script>
   <script type="module" src="/app.js"></script>
 </head>
 <body>
@@ -17,6 +18,7 @@
       <a class="brand" href="/"><img src="/cube.svg" alt="">Food by <i>Clef.</i></a>
       <nav aria-label="Site navigation">
         <a href="/orchestration">Orchestration Notes →</a>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme" aria-pressed="false"></button>
       </nav>
     </div>
   </header>

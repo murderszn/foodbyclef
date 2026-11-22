@@ -15,6 +15,7 @@ const assets = {
   '/style.css': ['style.css', 'text/css; charset=utf-8'],
   '/orchestration.css': ['orchestration.css', 'text/css; charset=utf-8'],
   '/orchestration.js': ['orchestration.js', 'text/javascript; charset=utf-8'],
+  '/theme.js': ['theme.js', 'text/javascript; charset=utf-8'],
   '/submissions.json': ['submissions.json', 'application/json; charset=utf-8'],
   '/app.js': ['app.js', 'text/javascript; charset=utf-8'],
   '/rules.js': ['rules.js', 'text/javascript; charset=utf-8'],
