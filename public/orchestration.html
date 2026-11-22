@@ -1,295 +1,61 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#f6f4ec">
-  <meta name="description" content="An executive briefing on neural decision engines—Clef, Jev, and Google's Decisions API—and how Paperclip and LangGraph orchestrate them into Plinko cascades and hybrid agent workflows.">
-  <title>The Decision Layer — Food by Clef</title>
-  <link rel="icon" href="/cube.svg">
-  <link rel="stylesheet" href="/style.css">
-  <link rel="stylesheet" href="/orchestration.css">
-  <script type="module" src="/orchestration.js"></script>
-</head>
-<body>
-  <a class="skip" href="#abstract">Skip to article</a>
-  <header class="mast">
-    <div class="shell mast-inner">
-      <a class="brand" href="/"><img src="/cube.svg" alt="">Food by <i>Clef.</i></a>
-      <nav aria-label="Site navigation">
-        <a href="/">← Live Classifier</a>
-      </nav>
-    </div>
-  </header>
-
-  <main>
-    <!-- Opening Executive Spread -->
-    <section id="abstract" class="mono-hero shell" aria-labelledby="mono-title">
-      <div class="mono-lead">
-        <div class="kicker"><span class="line"></span> ARCHITECTURE &amp; ORCHESTRATION BRIEF</div>
-        <h1 id="mono-title">The missing layer in agentic AI: <em>neural decision engines.</em></h1>
-        <p class="abstract">As enterprises move from chat copilots to autonomous multi-step workflows, a structural bottleneck has emerged: routing repeatable judgment through 9–30 second generative reasoning models multiplies latency and token spend. A new class of System One decision models—<strong>Cloudflare’s Clef</strong>, <strong>TypeSafe AI’s Jev</strong>, and <strong>Google’s Decisions API</strong>—turns classification and policy gating into a sub-second, zero-output-token software primitive.</p>
-
-        <div class="key-metrics" aria-label="Key benchmarks">
-          <div>
-            <strong>0 tokens</strong>
-            <span>Output decoded per decision pass<sup>1</sup></span>
-          </div>
-          <div>
-            <strong>150–250 ms</strong>
-            <span>Up to 1,000 parallel questions<sup>1</sup></span>
-          </div>
-          <div>
-            <strong>40–70%</strong>
-            <span>Compute savings via tiered routing<sup>2</sup></span>
-          </div>
-        </div>
-      </div>
-
-      <figure class="board fig-board">
-        <div class="fig-media">
-          <img src="/plinko-diagram.jpg" alt="Isometric illustration of a technical Plinko decision board where glowing tokens cascade through three rows of prism pegs into four deterministic output bins">
-        </div>
-        <figcaption class="fig-cap"><strong>Chained decision engines act like a technical Plinko board.</strong> Each peg evaluates a fixed rubric in a single forward pass, deflecting incoming events into deterministic output bins—no generative text loop required.</figcaption>
-      </figure>
-    </section>
-
-    <!-- Case Exhibit: Food by Clef as a Single Decision Agent -->
-    <section class="band mono-section" aria-labelledby="sec-exhibit">
-      <div class="shell">
-        <div class="kicker"><span class="line"></span> CASE IN POINT · LIVE EXHIBIT</div>
-        <div class="section-heading">
-          <h2 id="sec-exhibit">Food by Clef as a single <em>decision peg.</em></h2>
-          <p>Why a playful food-classification lab is a clean blueprint for production enterprise routing.</p>
-        </div>
-
-        <div class="case-exhibit">
-          <div class="case-prose">
-            <p>On the surface, <a href="/">Food by Clef</a> settles a lighthearted debate—whether a hot dog is a taco or lasagna is a cake. Under the hood, it is a minimal, transparent exhibit of a <strong>single-agent decision node</strong> operating on Ollama’s <code>/v1/systemone</code> and Cloudflare Workers AI.</p>
-            <p>Rather than prompting a chat model to write a paragraph and parsing brittle JSON out of prose, the application submits unstructured multimodal evidence—a dish name, a photograph, or both—alongside a typed schema of three simultaneous questions: one nine-way categorical classifier (<code>choice</code>) and two independent binary probability gates (<code>noul</code>) for <em>food presence</em> and <em>structural ambiguity</em>.</p>
-            <p>In one forward pass, Clef returns calibrated preference scores across all nine categories plus both guardrail probabilities. Change a single structural detail—an <em>open falafel wrap</em> versus a <em>sealed burrito</em>—and the probability mass shifts deterministically from <strong>Sushi</strong> to <strong>Calzone</strong>. That exact single-peg behavior is the building block of large-scale orchestrated systems.</p>
-          </div>
-
-          <aside class="board case-callout" aria-label="Single-peg anatomy">
-            <div class="callout-head">
-              <span class="callout-kicker">ANATOMY OF ONE DECISION CALL</span>
-            </div>
-
-            <div class="anatomy-track">
-              <div class="anatomy-step">
-                <span class="step-num">01</span>
-                <div class="step-body">
-                  <strong>Shared State In</strong>
-                  <p>Text, JSON, or resized image passed once into context.</p>
-                  <div class="step-chips"><span>text</span><span>image</span><span>json</span></div>
-                </div>
-              </div>
-
-              <div class="anatomy-step">
-                <span class="step-num">02</span>
-                <div class="step-body">
-                  <strong>Parallel Schema Scoring</strong>
-                  <p>Evaluates every category and guardrail simultaneously.</p>
-                  <div class="step-chips"><span class="chip-accent">choice × 9</span><span>noul: food_present</span><span>noul: ambiguous</span></div>
-                </div>
-              </div>
-
-              <div class="anatomy-step">
-                <span class="step-num">03</span>
-                <div class="step-body">
-                  <strong>Typed Control Signal Out</strong>
-                  <p>Calibrated probabilities ready for deterministic branching—zero prose, zero regex.</p>
-                  <div class="signal-preview"><code>{ choice: "taco", p: 0.82, noul: 0.95 }</code></div>
-                </div>
-              </div>
-            </div>
-
-            <a class="callout-cta" href="/"><span>Inspect the live exhibit</span><span aria-hidden="true">→</span></a>
-          </aside>
-        </div>
-      </div>
-    </section>
-
-    <!-- Section II: Hybrid Orchestration (Paperclip & LangGraph) -->
-    <section class="mono-section shell" aria-labelledby="sec-hybrid">
-      <div class="kicker"><span class="line"></span> SECTION II · ORCHESTRATION TOPOLOGIES</div>
-      <div class="section-heading">
-        <h2 id="sec-hybrid">From standalone Plinko to <em>hybrid orchestration.</em></h2>
-        <p>How orchestrators like Paperclip and LangGraph pair fast decision routers with frontier reasoning agents.</p>
-      </div>
-
-      <div class="hybrid-layout">
-        <figure class="board fig-board">
-          <div class="fig-media">
-            <img src="/hybrid-orchestration.jpg" alt="Isometric illustration of a glowing terracotta router cube directing most pulses along a sage-green fast track to deterministic tools, arcing complex pulses to a crystalline reasoning tower, and deflecting invalid inputs to a stop pad">
-          </div>
-          <figcaption class="fig-cap"><strong>Three-track conditional routing.</strong> A fast decision prism (left) resolves routine traffic on the green direct-action rail, blocks out-of-scope inputs on the lower guardrail pad, and escalates only ambiguous edge cases to the heavy reasoning tower.</figcaption>
-        </figure>
-
-        <div class="hybrid-copy">
-          <article class="insight-block">
-            <span class="topo-num">01 · THE MULTI-STEP COST MULTIPLIER</span>
-            <h3>Why reasoning agents stall on repeatable triage</h3>
-            <p>Research from McKinsey and QuantumBlack on enterprise agentic builds highlights a recurring failure mode: unmanaged agent loops multiply token spend and cumulative latency.<sup>2</sup> When a frontier reasoning model is invoked at every intake step, simple routing tasks inherit 9–30 second waits and unpredictable variance.</p>
-          </article>
-
-          <article class="insight-block">
-            <span class="topo-num">02 · STANDALONE PLINKO CASCADES</span>
-            <h3>Repeatable sorting without generative LLMs</h3>
-            <p>For high-volume, well-defined decisions, teams chain multiple Clef, Jev, or Gemini Decision nodes directly together. Each peg narrows the state—validity gate, domain bucket, priority tier—producing auditable, repeatable outputs at a fraction of generative compute.</p>
-          </article>
-
-          <article class="insight-block">
-            <span class="topo-num">03 · HYBRID ORCHESTRATION</span>
-            <h3>Fast router ahead of deep synthesis</h3>
-            <p>Inside orchestrators such as <strong>Paperclip</strong> (coordinating specialized AI workers) or <strong>LangGraph</strong> (stateful conditional edges), a decision engine sits at the front door. Clear cases trigger instant deterministic actions; only when an <code>ambiguous</code> noul rises or top-two class probabilities narrow does the orchestrator wake a heavy reasoning agent—handing it pre-scored context.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- Section III: Comparative Economics Table -->
-    <section class="band mono-section" aria-labelledby="sec-economics">
-      <div class="shell">
-        <div class="kicker"><span class="line"></span> EXHIBIT 3 · MODEL ECONOMICS &amp; CAPABILITIES</div>
-        <div class="section-heading">
-          <h2 id="sec-economics">Decision engines vs. <em>reasoning agents.</em></h2>
-          <p>Matching the right neural primitive to the right stage of an enterprise workflow.</p>
-        </div>
-
-        <div class="table-wrap">
-          <table class="compare-table">
-            <thead>
-              <tr>
-                <th scope="col">Architectural Dimension</th>
-                <th scope="col">Neural Decision Engines<br><span class="th-sub">Clef · Jev · Gemini Decision 1</span></th>
-                <th scope="col">Generative Reasoning Agents<br><span class="th-sub">Frontier CoT &amp; Tool-Calling LLMs</span></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">End-to-end latency</th>
-                <td class="highlight">~150–250 ms hosted (API) · ~1–2s local<sup>1</sup></td>
-                <td>9s – 30s+ per multi-step reasoning turn</td>
-              </tr>
-              <tr>
-                <th scope="row">Output mechanism</th>
-                <td class="highlight">Single forward pass · 0 output tokens decoded<sup>1</sup></td>
-                <td>Autoregressive token-by-token text &amp; JSON</td>
-              </tr>
-              <tr>
-                <th scope="row">Parallel evaluation</th>
-                <td class="highlight">Score dozens to 1,000+ criteria on one shared state<sup>1</sup></td>
-                <td>Sequential prompting or fragile mega-prompts</td>
-              </tr>
-              <tr>
-                <th scope="row">Governance &amp; repeatability</th>
-                <td class="highlight">Calibrated probabilities &amp; hard numeric thresholds</td>
-                <td>Stochastic prose requiring schema &amp; judge checks</td>
-              </tr>
-              <tr>
-                <th scope="row">Optimal role in Paperclip / LangGraph</th>
-                <td class="highlight">Intake gating, Plinko cascades, policy &amp; escalation routing</td>
-                <td>Open-ended synthesis, multi-file coding, complex negotiation</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- Section IV: Community Library of Submissions -->
-    <section id="library" class="mono-section shell" aria-labelledby="sec-domains">
-      <div class="kicker"><span class="line"></span> WORKFLOW LIBRARY · OPEN SUBMISSIONS</div>
-      <div class="section-heading">
-        <h2 id="sec-domains">Library of <em>submissions.</em></h2>
-        <p>Curated Plinko cascades and hybrid reasoning handoffs—reviewed and merged via GitHub.</p>
-      </div>
-
-      <div class="library-bar">
-        <div id="library-filters" class="library-filters" role="group" aria-label="Filter workflow submissions by discipline"></div>
-        <span id="library-count" class="library-count">6 curated workflows</span>
-      </div>
-
-      <div id="library-grid" class="domain-grid">
-        <article class="domain-card">
-          <div class="domain-head"><span class="domain-idx">01</span><h3>Finance &amp; Risk</h3><span class="domain-orch">Paperclip</span></div>
-          <p class="domain-plinko"><strong>Plinko cascade:</strong> Classify invoices and expenses into GL codes, check policy compliance (<code>noul</code>), and score anomaly risk—auto-posting clean entries directly to the ERP.</p>
-          <p class="domain-agent"><strong>Reasoning handoff:</strong> Escalate only flagged anomalies or cross-entity exceptions to a reasoning agent to assemble audit memos and controller briefs.</p>
-          <div class="domain-foot"><span class="domain-contrib">Submitted by @murderszn</span></div>
-        </article>
-
-        <article class="domain-card">
-          <div class="domain-head"><span class="domain-idx">02</span><h3>Marketing &amp; Growth</h3><span class="domain-orch">Paperclip</span></div>
-          <p class="domain-plinko"><strong>Plinko cascade:</strong> Sort inbound creative, social signals, and customer feedback by campaign theme, brand-safety (<code>noul</code>), and sentiment tier—auto-tagging and routing routine work.</p>
-          <p class="domain-agent"><strong>Reasoning handoff:</strong> Route nuanced PR risk or competitive threads to a reasoning agent to draft executive responses and positioning adjustments.</p>
-          <div class="domain-foot"><span class="domain-contrib">Submitted by @murderszn</span></div>
-        </article>
-
-        <article class="domain-card">
-          <div class="domain-head"><span class="domain-idx">03</span><h3>Sales &amp; RevOps</h3><span class="domain-orch">LangGraph</span></div>
-          <p class="domain-plinko"><strong>Plinko cascade:</strong> Score inbound leads by ICP segment, buying stage, and competitor-mention (<code>noul</code>)—triggering instant CRM territory routing and tailored sequences.</p>
-          <p class="domain-agent"><strong>Reasoning handoff:</strong> Invoke a reasoning agent only for bespoke enterprise RFPs, custom deal-desk structuring, or security questionnaire synthesis.</p>
-          <div class="domain-foot"><span class="domain-contrib">Submitted by @murderszn</span></div>
-        </article>
-
-        <article class="domain-card">
-          <div class="domain-head"><span class="domain-idx">04</span><h3>Engineering &amp; Coding</h3><span class="domain-orch">Paperclip · LangGraph</span></div>
-          <p class="domain-plinko"><strong>Plinko cascade:</strong> Triage issues, PRs, and CI failures into subsystem owners, bug vs. feature, and security-sensitive (<code>noul</code>)—applying labels and paging owners in milliseconds.</p>
-          <p class="domain-agent"><strong>Reasoning handoff:</strong> Dispatch a coding reasoning agent only when root-cause analysis or multi-file patch generation is required.</p>
-          <div class="domain-foot"><span class="domain-contrib">Submitted by @murderszn</span></div>
-        </article>
-
-        <article class="domain-card">
-          <div class="domain-head"><span class="domain-idx">05</span><h3>Editorial &amp; Writing</h3><span class="domain-orch">Paperclip</span></div>
-          <p class="domain-plinko"><strong>Plinko cascade:</strong> Grade incoming drafts by desk/genre, factual-claim density (<code>noul</code>), and house-style alignment—fast-tracking clean briefs straight to production.</p>
-          <p class="domain-agent"><strong>Reasoning handoff:</strong> Escalate investigative pieces or tone-contested drafts to a reasoning agent for structural line editing, citation checks, and counter-argument review.</p>
-          <div class="domain-foot"><span class="domain-contrib">Submitted by @murderszn</span></div>
-        </article>
-
-        <article class="domain-card">
-          <div class="domain-head"><span class="domain-idx">06</span><h3>Customer Support &amp; Ops</h3><span class="domain-orch">LangGraph</span></div>
-          <p class="domain-plinko"><strong>Plinko cascade:</strong> Route tickets by issue category, refund eligibility (<code>noul</code>), and churn risk—resolving routine order status, replacements, and billing inquiries instantly.</p>
-          <p class="domain-agent"><strong>Reasoning handoff:</strong> Hand off multi-order disputes, VIP retention cases, or ambiguous policy exceptions to a reasoning agent armed with pre-scored account context.</p>
-          <div class="domain-foot"><span class="domain-contrib">Submitted by @murderszn</span></div>
-        </article>
-      </div>
-
-      <div class="submit-banner">
-        <div>
-          <span class="submit-kicker">CONTRIBUTE TO THE LIBRARY</span>
-          <h3>Have a decision-engine workflow to share?</h3>
-          <p>Submit a Plinko cascade or hybrid orchestration pattern via GitHub. Approved submissions are merged into <code>public/submissions.json</code> and published here.</p>
-        </div>
-        <div class="submit-actions">
-          <a class="primary-link" href="https://github.com/murderszn/foodbyclef/issues/new?template=use-case-submission.yml" target="_blank" rel="noreferrer">Submit an idea via GitHub →</a>
-          <a href="https://github.com/murderszn/foodbyclef/edit/main/public/submissions.json" target="_blank" rel="noreferrer">Or open a PR to submissions.json ↗</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- References & Try Live -->
-    <section class="band mono-refs" aria-labelledby="refs-title">
-      <div class="shell refs-grid">
-        <div>
-          <h2 id="refs-title">Sources &amp; technical references</h2>
-          <ol class="ref-list">
-            <li>Google Decisions API (<code>gemini-decision-1</code>) &amp; TypeSafe AI’s Jev System One specification: single-pass <code>noul</code>, <code>choice</code>, and <code>score</code> evaluation with zero output tokens and ~150–250 ms latency across parallel criteria.</li>
-            <li>McKinsey &amp; QuantumBlack analyses on scaling enterprise agentic AI workflows: tiered model routing, deterministic orchestration, and governance thresholds reducing token/compute spend by 40–70%.</li>
-            <li>Cloudflare Clef &amp; Clef Flash open-weight decision models (<code>@cf/cloudflare/clef-flash</code>) and <a href="https://docs.ollama.com/capabilities/decision" target="_blank" rel="noreferrer">Ollama System One Decision API</a> (<code>/v1/systemone</code>).</li>
-          </ol>
-        </div>
-        <div class="closing-actions">
-          <a class="primary-link" href="/">← Try the live Clef exhibit</a>
-          <a href="https://ollama.com/library/clef-flash" target="_blank" rel="noreferrer">Clef Flash model card ↗</a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="shell">
-    <a class="brand small" href="/"><img src="/cube.svg" alt="">Food by <i>Clef.</i></a>
-    <a href="/">Back to classifier</a>
-  </footer>
-</body>
-</html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Learn how classification models turn evidence into scores and how a workflow uses those scores to make a decision. Explore three recorded Clef Flash examples.">
+<meta name="theme-color" content="#f6f4ec"><title>The Decision Layer — Food by Clef</title>
+<link rel="icon" href="/cube.svg"><link rel="stylesheet" href="/orchestration.css"><script src="/orchestration.js" defer></script>
+</head><body><a class="skip" href="#abstract">Skip to lesson</a>
+<header class="mast"><div class="shell mast-row"><a class="brand" href="/"><img src="/cube.svg" width="30" height="33" alt="">Food by <i>Clef.</i></a><span class="book-title">Learning notes</span><nav aria-label="Page navigation"><a href="#sec-exhibit">Decision lab</a><a href="#library">Workflows</a><a class="nav-cta" href="/">Live classifier</a></nav></div></header>
+<main>
+<section class="shell hero" id="abstract" aria-labelledby="mono-title">
+<div class="hero-copy"><div class="eyeline"><span></span> ORCHESTRATION NOTES</div>
+<h1 id="mono-title">The decision<br><em>layer.</em></h1>
+<p class="standfirst">How does a classification model decide where an input belongs? Follow a dish from description to score, then choose what the software does next.</p>
+<a class="btn" href="#sec-exhibit">Try the decision lab</a></div>
+<figure class="machine"><div class="figure-head"><span class="small-cube" aria-hidden="true"></span> Decision engine <span class="dim">Routing study</span></div>
+<img src="/plinko-diagram.jpg" width="1200" height="896" alt="A funnel feeds a branching array of decision points above four possible destinations.">
+<figcaption><strong>One input. Several possible routes.</strong> Each peg represents a question. The application uses the answer to choose a branch.</figcaption></figure>
+</section>
+<section class="lab-section" aria-labelledby="sec-exhibit"><div class="shell">
+<div class="section-head"><div><div class="eyeline"><span></span> HANDS-ON LESSON</div><h2 id="sec-exhibit">Inside one <em>decision.</em></h2></div>
+<p>Change the evidence, then move the cutoff. The model supplies the scores. You write the routing rule.</p></div>
+<div class="bench">
+<div class="controls"><h3>Choose the evidence</h3>
+<div id="case-buttons" class="cases" role="group" aria-label="Recorded examples">
+<button type="button" data-case="0" aria-pressed="true">Open wrap</button><button type="button" data-case="1" aria-pressed="false">Sealed burrito</button><button type="button" data-case="2" aria-pressed="false">Unclear wrap</button></div>
+<blockquote id="quote">“An open-ended falafel wrap with a tortilla around the sides and both ends open.”</blockquote>
+<div class="cutoff-label"><label for="cutoff">Minimum top score</label><output id="cutoff-value" for="cutoff">60%</output></div><input id="cutoff" type="range" min="30" max="95" value="60" step="1">
+<p class="hint">A top score below this cutoff sends the dish to review. Food presence and ambiguity are checked first.</p>
+</div>
+<div class="readout"><div class="figure-head"><span class="small-cube" aria-hidden="true"></span> Clef Flash <span class="dim">Recorded response</span></div>
+<div class="result-row"><div><span class="micro">Leading category</span><h3 id="winner">Sushi</h3></div><strong id="winning-score">73.0%</strong></div>
+<div id="bars" aria-label="Top three category scores"></div>
+<div class="gates"><div><span>Food present</span><b id="food-score">93.1%</b></div><div><span>Ambiguity</span><b id="ambiguity-score">11.2%</b></div></div>
+<div class="route-line"><span class="route-icon" aria-hidden="true">◆</span><div><strong id="route">Accept ruling</strong><p id="reason">The leading score clears the cutoff and both checks pass.</p></div></div>
+</div></div>
+<p id="announcement" class="sr" role="status"></p><noscript><p>Enable JavaScript to switch examples and adjust the cutoff. The initial readout shows the open-wrap example.</p></noscript>
+<div class="lab-note"><p>These are three saved runs. Moving the cutoff reuses the same scores. A category score measures the model’s preference among the nine labels.</p><a href="/">Classify your own dish</a></div>
+</div></section>
+<section class="shell architecture" aria-labelledby="sec-hybrid"><div class="eyeline"><span></span> WORKFLOW DESIGN</div><h2 id="sec-hybrid">Where the model <em>fits.</em></h2>
+<div class="arch-grid"><figure class="routing-art"><img src="/hybrid-orchestration.jpg" alt="A routing junction splits an incoming track into a direct path, a stop, and an escalation path." loading="lazy" width="1200" height="896"><figcaption>Direct action · Stop · Escalate</figcaption></figure>
+<div class="steps"><article><div class="tag">Input</div><h3>Define the labels and the checks.</h3><p>Give each category a distinct description. Food by Clef uses one nine-way <code>choice</code> question for starch shape and two <code>noul</code> questions for food presence and ambiguity.</p></article>
+<article><div class="tag">Decision</div><h3>Make the threshold explicit.</h3><p>The classifier flags inputs below 50% food presence. It marks a ruling as uncertain when ambiguity exceeds 50% or the top category scores below 60%. Tune thresholds against labeled examples from your own task.</p></article>
+<article><div class="tag">Orchestration</div><h3>Give the hard cases a second look.</h3><p>A workflow can chain small decisions or branch to a person or reasoning agent for synthesis. Pass along the evidence and scores so the next step has the context it needs.</p></article></div></div>
+<details class="comparison"><summary id="sec-economics">Compare classifiers and reasoning agents <span aria-hidden="true">+</span></summary><div class="table-scroll"><table><caption>Choosing a model for a workflow step</caption><thead><tr><th scope="col">Design question</th><th scope="col">Classification model</th><th scope="col">Reasoning agent</th></tr></thead><tbody>
+<tr><th scope="row">What comes out?</th><td>Scores for predefined labels or criteria</td><td>A generated response, plan, or tool call</td></tr>
+<tr><th scope="row">Where does it fit?</th><td>Tagging, intake checks, and routing</td><td>Investigation, drafting, and multi-step execution</td></tr>
+<tr><th scope="row">How do you evaluate it?</th><td>Measure errors per label and review cases near the cutoff.</td><td>Check task completion, evidence, and tool outcomes.</td></tr>
+<tr><th scope="row">What drives cost?</th><td>Input size, model choice, and calls per item</td><td>Input and generated tokens, tool use, and repeated turns</td></tr>
+</tbody></table></div></details></section>
+<section id="library" class="library" aria-labelledby="sec-domains"><div class="shell"><div class="section-head"><div><div class="eyeline"><span></span> WORKFLOW LIBRARY</div><h2 id="sec-domains">Patterns in <em>practice.</em></h2></div><p>Explore a repeatable classification step and the point where each workflow hands off to deeper reasoning.</p></div>
+<div class="library-tools"><label for="discipline">Discipline</label><select id="discipline"><option value="">All disciplines</option></select><span id="library-count" role="status"></span></div>
+<div id="library-grid"><details class="workflow" data-discipline="Finance &amp; Risk" open><summary><span class="workflow-title">Finance &amp; Risk</span><span class="tool">Paperclip</span><span class="expand" aria-hidden="true">+</span></summary><div class="workflow-body"><div><h3>Classification step</h3><p>Classify invoices and expenses into GL codes, check policy compliance (noul), and score anomaly risk—auto-posting clean entries directly to the ERP.</p></div><div><h3>Reasoning handoff</h3><p>Escalate only flagged anomalies or cross-entity exceptions to a reasoning agent to assemble audit memos and controller briefs.</p></div><small>Submitted by @murderszn</small></div></details>
+<details class="workflow" data-discipline="Marketing &amp; Growth"><summary><span class="workflow-title">Marketing &amp; Growth</span><span class="tool">Paperclip</span><span class="expand" aria-hidden="true">+</span></summary><div class="workflow-body"><div><h3>Classification step</h3><p>Sort inbound creative, social signals, and customer feedback by campaign theme, brand-safety (noul), and sentiment tier—auto-tagging and routing routine work.</p></div><div><h3>Reasoning handoff</h3><p>Route nuanced PR risk or competitive threads to a reasoning agent to draft executive responses and positioning adjustments.</p></div><small>Submitted by @murderszn</small></div></details>
+<details class="workflow" data-discipline="Sales &amp; RevOps"><summary><span class="workflow-title">Sales &amp; RevOps</span><span class="tool">LangGraph</span><span class="expand" aria-hidden="true">+</span></summary><div class="workflow-body"><div><h3>Classification step</h3><p>Score inbound leads by ICP segment, buying stage, and competitor-mention (noul)—triggering instant CRM territory routing and tailored sequences.</p></div><div><h3>Reasoning handoff</h3><p>Invoke a reasoning agent only for bespoke enterprise RFPs, custom deal-desk structuring, or security questionnaire synthesis.</p></div><small>Submitted by @murderszn</small></div></details>
+<details class="workflow" data-discipline="Engineering &amp; Coding"><summary><span class="workflow-title">Engineering &amp; Coding</span><span class="tool">Paperclip · LangGraph</span><span class="expand" aria-hidden="true">+</span></summary><div class="workflow-body"><div><h3>Classification step</h3><p>Triage issues, PRs, and CI failures into subsystem owners, bug vs. feature, and security-sensitive (noul)—applying labels and paging owners in milliseconds.</p></div><div><h3>Reasoning handoff</h3><p>Dispatch a coding reasoning agent only when root-cause analysis or multi-file patch generation is required.</p></div><small>Submitted by @murderszn</small></div></details>
+<details class="workflow" data-discipline="Editorial &amp; Writing"><summary><span class="workflow-title">Editorial &amp; Writing</span><span class="tool">Paperclip</span><span class="expand" aria-hidden="true">+</span></summary><div class="workflow-body"><div><h3>Classification step</h3><p>Grade incoming drafts by desk/genre, factual-claim density (noul), and house-style alignment—fast-tracking clean briefs straight to production.</p></div><div><h3>Reasoning handoff</h3><p>Escalate investigative pieces or tone-contested drafts to a reasoning agent for structural line editing, citation checks, and counter-argument review.</p></div><small>Submitted by @murderszn</small></div></details>
+<details class="workflow" data-discipline="Customer Support &amp; Ops"><summary><span class="workflow-title">Customer Support &amp; Ops</span><span class="tool">LangGraph</span><span class="expand" aria-hidden="true">+</span></summary><div class="workflow-body"><div><h3>Classification step</h3><p>Route tickets by issue category, refund eligibility (noul), and churn risk—resolving routine order status, replacements, and billing inquiries instantly.</p></div><div><h3>Reasoning handoff</h3><p>Hand off multi-order disputes, VIP retention cases, or ambiguous policy exceptions to a reasoning agent armed with pre-scored account context.</p></div><small>Submitted by @murderszn</small></div></details></div>
+<div class="contribute"><div><h3>Contribute a workflow</h3><p>Describe the input, the routing decision, and what warrants a handoff.</p></div><div><a class="btn" href="https://github.com/murderszn/foodbyclef/issues/new?template=use-case-submission.yml">Submit an idea</a><a href="https://github.com/murderszn/foodbyclef/edit/main/public/submissions.json">Edit the collection</a></div></div>
+</div></section>
+<section class="shell refs" aria-labelledby="refs-title"><h2 id="refs-title">Technical references</h2><ul><li><a href="https://developers.cloudflare.com/workers-ai/models/clef-flash/">Cloudflare · Clef Flash model and inputs</a></li><li><a href="https://docs.ollama.com/capabilities/decision">Ollama · System One decision API</a></li><li><a href="https://ollama.com/library/clef-flash">Ollama · Clef Flash model card</a></li></ul></section>
+</main><footer><div class="shell mast-row"><a class="brand" href="/"><img src="/cube.svg" alt="" width="24" height="27">Food by <i>Clef.</i></a><a href="/">Back to classifier</a></div></footer></body></html>
