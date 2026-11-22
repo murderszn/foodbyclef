@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#f6f4ec">
+  <meta name="theme-color" content="#111210">
   <meta name="description" content="Classify a dish by its starch structure with Clef Flash and explore all nine categories in the Cube Rule field guide.">
   <title>Food by Clef — The Cube Rule classifier</title>
   <link rel="icon" href="/cube.svg">
@@ -25,6 +25,7 @@
       <div class="lab-work">
         <h1 id="lab-title">What are <br>you <em>eating?</em></h1>
         <p class="intro">Enter a dish or photo—Clef classifies it by starch shape.</p>
+        <p class="hero-credit">Based on <a href="https://cuberule.com/" target="_blank" rel="noreferrer">The Cube Rule manifesto ↗</a> by @Phosphatide &amp; @indirect.</p>
         <form id="classify-form">
           <div class="field-head"><label for="food" class="sr-only">Describe your dish</label><span class="meta" id="char-count" hidden></span></div>
           <div id="drop-zone">
@@ -58,14 +59,6 @@
         </form>
       </div>
       <div class="board" id="result" aria-live="polite" aria-busy="false">
-        <div class="spec-head">
-          <span>SPECIMEN VIEW</span>
-          <div class="gallery-nav" role="group" aria-label="Browse worked examples">
-            <button type="button" data-step="-1" aria-label="Previous specimen">‹</button>
-            <span id="spec-position">1 / 9</span>
-            <button type="button" data-step="1" aria-label="Next specimen">›</button>
-          </div>
-        </div>
         <div class="plate">
           <img id="spec-image" class="burger" src="/burger.webp" alt="Exploded burger with separate top and bottom buns surrounding the filling">
         </div>
@@ -77,7 +70,14 @@
           <span id="spec-category" class="class-tag">Sandwich</span>
         </div>
         <p id="spec-note" class="spec-note">Two opposing buns hold the filling between them.</p>
-        <button type="button" data-try-specimen class="try-specimen">Try this dish</button>
+        <div class="spec-foot">
+          <button type="button" data-try-specimen class="try-specimen">Try this dish</button>
+          <div class="gallery-nav" role="group" aria-label="Browse worked examples">
+            <button type="button" data-step="-1" aria-label="Previous specimen">‹</button>
+            <span id="spec-position">1 / 9</span>
+            <button type="button" data-step="1" aria-label="Next specimen">›</button>
+          </div>
+        </div>
       </div>
     </section>
 
